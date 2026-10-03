@@ -1,0 +1,12 @@
+POST http://localhost:7072/api/workrequests/
+Content-Type: application/json
+
+{
+  "fornavn": "Saniela",
+  "efternavn": "Dhimitri",
+  "email": "saniela0709@icloud.com",
+  "telefon": "12345678",
+  "adresse": "Gentofte",
+  "beskrivelse": "Test af arbejdsforespørgsel",
+  "bruger": null
+}

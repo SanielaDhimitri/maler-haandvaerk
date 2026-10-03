@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:7072/api/workrequests
+
+### 1. Hent alle arbejdsforespørgsler
+GET {{baseUrl}}/
+Accept: application/json
+
+
+### 2. Opret en ny arbejdsforespørgsel
+POST {{baseUrl}}/
+Content-Type: application/json
+
+{
+  "fornavn": "Saniela",
+  "efternavn": "Dhimitri",
+  "email": "saniela0709@icloud.com",
+  "telefon": "12345678",
+  "adresse": "Gentofte",
+  "beskrivelse": "Maling af lejlighed"
+}
+
+
+### 3. Hent arbejdsforespørgsel med ID 1
+GET {{baseUrl}}/1
+Accept: application/json
+
+
+### Opdater status på WorkRequest
+PUT {{baseUrl}}/5/status
+Content-Type: application/json
+
+"UNDER_BEHANDLING"
+
+
+### 5. Slet arbejdsforespørgsel med ID 1
+DELETE {{baseUrl}}/1

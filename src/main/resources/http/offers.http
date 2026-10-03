@@ -1,0 +1,78 @@
+@baseUrl = http://localhost:7072/api/offers
+
+
+### =========================================================
+### OFFER API
+### =========================================================
+
+
+### 1. Hent alle tilbud
+GET {{baseUrl}}
+Accept: application/json
+
+
+### 2. Hent tilbud med ID 7
+GET {{baseUrl}}/7
+Accept: application/json
+
+
+### 3. Hent tilbud med ID 8
+GET {{baseUrl}}/8
+Accept: application/json
+
+
+### 4. Opret et nyt tilbud
+# OBS: WorkRequest må ikke allerede have et tilbud
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "pris": 15000.0,
+  "beskrivelse": "Tilbud på maling af bolig",
+  "oprettetDato": "2026-10-02",
+  "gyldigTil": "2026-10-25",
+  "workRequestId": 1
+}
+
+
+### 5. Opdater tilbud med ID 7
+PUT {{baseUrl}}/7
+Content-Type: application/json
+
+{
+  "pris": 18000.0,
+  "beskrivelse": "Opdateret tilbud på maling af bolig",
+  "oprettetDato": "2026-10-02",
+  "gyldigTil": "2026-10-25",
+  "workRequestId": 1
+}
+
+
+### 6. Opdater tilbud med ID 8
+PUT {{baseUrl}}/8
+Content-Type: application/json
+
+{
+  "pris": 35000.0,
+  "beskrivelse": "Opdateret tilbud på renovering af bolig",
+  "oprettetDato": "2026-10-02",
+  "gyldigTil": "2026-10-30",
+  "workRequestId": 2
+}
+
+
+### 7. Slet tilbud
+# Skift ID'et til det tilbud, du ønsker at slette
+DELETE {{baseUrl}}/8
+
+
+### 8. Kontroller alle tilbud efter DELETE
+GET {{baseUrl}}
+Accept: application/json
+
+
+### 9. Kontroller om tilbuddet er slettet
+GET {{baseUrl}}/8
+Accept: application/json
+//HTTP-filen tester CRUD-operationerne i vores REST
+//endpoint: POST /api/offers funger.

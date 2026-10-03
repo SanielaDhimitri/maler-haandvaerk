@@ -1,0 +1,45 @@
+### Hent alle bookinger
+GET http://localhost:7072/api/bookings
+Accept: application/json
+
+
+### Hent én booking
+GET http://localhost:7072/api/bookings/1
+Accept: application/json
+
+
+### Opret en booking
+POST http://localhost:7072/api/bookings
+Content-Type: application/json
+
+{
+  "dato": [2026, 10, 5],
+  "tid": [10, 30],
+  "beskrivelse": "Maling af stue",
+  "kundenavn": "Anna",
+  "email": "anna@mail.dk",
+  "telefon": "12345678",
+  "serviceIds": []
+}
+
+
+### Opdater en booking
+PUT http://localhost:7072/api/bookings/1
+Content-Type: application/json
+
+{
+  "dato": [2026, 10, 6],
+  "tid": [11, 0],
+  "beskrivelse": "Maling af stue og gang",
+  "kundenavn": "Anna",
+  "email": "anna@mail.dk",
+  "telefon": "12345678",
+  "serviceIds": []
+}
+
+
+### Slet en booking
+DELETE http://localhost:7072/api/bookings/111
+
+//HTTP-filen tester CRUD-operationerne i vores REST
+//endpoint: POST /api/offers funger.
