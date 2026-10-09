@@ -1,4 +1,5 @@
 
+
 name: Java CI with Maven
 
 on:
@@ -33,6 +34,7 @@ jobs:
       DB_PASSWORD: postgres
       CONNECTION_STR: jdbc:postgresql://localhost:5432/
       EMAIL_TEST_MODE: "true"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -49,7 +51,7 @@ jobs:
 
       - name: Start Javalin server
         run: |
-          mvn -B dependency:build-classpath -Dmdep.outputFile=classpath.txt
+          mvn -B org.apache.maven.plugins:maven-dependency-plugin:3.9.0:build-classpath -Dmdep.outputFile=classpath.txt
           java -cp "target/classes:$(cat classpath.txt)" app.Main > server.log 2>&1 &
           echo $! > server.pid
 
