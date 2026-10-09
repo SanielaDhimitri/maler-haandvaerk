@@ -7,8 +7,19 @@ import com.resend.services.emails.model.CreateEmailResponse;
 public class EmailService {
 
     private final Resend resend;
+    private final boolean testMode;
 
     public EmailService() {
+
+        testMode = Boolean.parseBoolean(
+                System.getenv("EMAIL_TEST_MODE")
+        );
+
+        if (testMode) {
+            resend = null;
+            System.out.println("EMAIL TEST MODE - Ingen rigtige emails sendes.");
+            return;
+        }
 
         String apiKey = System.getenv("RESEND_API_KEY");
 
@@ -18,13 +29,17 @@ public class EmailService {
             );
         }
 
-        this.resend = new Resend(apiKey);
+        resend = new Resend(apiKey);
     }
 
 
     // 1. Bekræftelse når kunden sender en forespørgsel
     public void sendBekraeftelse(String modtagerEmail) {
 
+        if (testMode) {
+            System.out.println("TEST EMAIL - Would send to: " + modtagerEmail);
+            return;
+        }
         CreateEmailOptions params = CreateEmailOptions.builder()
                 .from("DH Maler & Byggeservice <info@dhmalerogbyggeservice.dk>")
                 .to(modtagerEmail)
@@ -56,7 +71,6 @@ public class EmailService {
         }
     }
 
-
     // 2. Send tilbud til kunden
     public void sendTilbud(
             String modtagerEmail,
@@ -64,11 +78,16 @@ public class EmailService {
             Double pris,
             String beskrivelse
     ) {
+        if (testMode) {
+            System.out.println("TEST EMAIL - Would send to: " + modtagerEmail);
+            return;
+        }
 
         String acceptUrl =
                 "http://localhost:7072/api/offers/"
                         + offerId
                         + "/accept";
+
 
         String rejectUrl =
                 "http://localhost:7072/api/offers/"
@@ -132,7 +151,10 @@ public class EmailService {
 
     // 3. Mail når kunden accepterer tilbuddet
     public void sendGodkendelsesmail(String modtagerEmail) {
-
+        if (testMode) {
+            System.out.println("TEST EMAIL - Would send to: " + modtagerEmail);
+            return;
+        }
         CreateEmailOptions params = CreateEmailOptions.builder()
                 .from("DH Maler & Byggeservice <info@dhmalerogbyggeservice.dk>")
                 .to(modtagerEmail)
