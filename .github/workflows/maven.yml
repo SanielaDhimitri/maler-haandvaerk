@@ -32,7 +32,7 @@ jobs:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       CONNECTION_STR: jdbc:postgresql://localhost:5432/
-
+      EMAIL_TEST_MODE: "true"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
