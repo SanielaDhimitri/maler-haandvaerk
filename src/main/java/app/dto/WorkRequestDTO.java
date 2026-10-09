@@ -2,6 +2,8 @@ package app.dto;
 
 import app.enums.RequestStatus;
 
+import java.util.List;
+
 public record WorkRequestDTO(
         Long id,
         String fornavn,
@@ -10,6 +12,10 @@ public record WorkRequestDTO(
         String telefon,
         String adresse,
         String beskrivelse,
-        RequestStatus status
+        RequestStatus status,
+        Long brugerId,
+        Long offerId,
+        List<WorkRequestDetailDTO> workRequestDetails
 ) {
 }
+// WorkRequestDTO → bruges, når vi sender en arbejdsforespørgsel tilbage til klienten

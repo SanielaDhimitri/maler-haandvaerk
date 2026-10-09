@@ -15,64 +15,92 @@ public class ApplicationConfig {
     public ApplicationConfig(Routes routes) {
 
         app = Javalin.create(config -> {
-            config.router.apiBuilder(routes.getRoutes());
-        });
 
-        // Logger request
-        app.before(ctx -> {
-
-            ctx.attribute("startTime", System.currentTimeMillis());
-
-            logger.info(
-                    "REQUEST: {} {} | Body: {}",
-                    ctx.method(),
-                    ctx.path(),
-                    ctx.body()
-            );
-        });
+            // =========================
+            // ROUTES
+            // Registrerer alle API endpoints
+            // =========================
+            routes.register(config);
 
 
-        // Logger response
-        app.after(ctx -> {
+            // =========================
+            // BEFORE HANDLER
+            // Kører før alle HTTP requests
+            // Logger request og gemmer starttid
+            // =========================
+            config.routes.before(ctx -> {
 
-            Long startTime = ctx.attribute("startTime");
+                ctx.attribute(
+                        "startTime",
+                        System.currentTimeMillis()
+                );
 
-            long responseTime = startTime != null
-                    ? System.currentTimeMillis() - startTime
-                    : 0;
-
-            logger.info(
-                    "RESPONSE: {} {} | Status: {} | Time: {} ms",
-                    ctx.method(),
-                    ctx.path(),
-                    ctx.status(),
-                    responseTime
-            );
-        });
+                logger.info(
+                        "REQUEST: {} {} | Body: {}",
+                        ctx.method(),
+                        ctx.path(),
+                        ctx.body()
+                );
+            });
 
 
-        // Logger fejl
-        app.exception(Exception.class, (e, ctx) -> {
+            // =========================
+            // AFTER HANDLER
+            // Kører efter alle HTTP requests
+            // Logger status og response time
+            // =========================
+            config.routes.after(ctx -> {
 
-            logger.error(
-                    "ERROR: {} {}",
-                    ctx.method(),
-                    ctx.path(),
-                    e
-            );
+                Long startTime =
+                        ctx.attribute("startTime");
 
-            ctx.status(500)
-                    .json(java.util.Map.of(
-                            "message",
-                            "Internal Server Error"
-                    ));
+                long responseTime =
+                        startTime != null
+                                ? System.currentTimeMillis() - startTime
+                                : 0;
+
+                logger.info(
+                        "RESPONSE: {} {} | Status: {} | Time: {} ms",
+                        ctx.method(),
+                        ctx.path(),
+                        ctx.status(),
+                        responseTime
+                );
+            });
+
+
+            // =========================
+            // EXCEPTION HANDLER
+            // Håndterer uventede fejl
+            // Returnerer HTTP 500 som tekst
+            // =========================
+            config.routes.exception(Exception.class, (e, ctx) -> {
+
+                logger.error(
+                        "ERROR: {} {}",
+                        ctx.method(),
+                        ctx.path(),
+                        e
+                );
+
+                ctx.status(500);
+                ctx.result("Internal Server Error");
+            });
         });
     }
 
+
+    // =========================
+    // START SERVER
+    // =========================
     public void startServer(int port) {
         app.start(port);
     }
 
+
+    // =========================
+    // STOP SERVER
+    // =========================
     public void stopServer() {
         app.stop();
     }

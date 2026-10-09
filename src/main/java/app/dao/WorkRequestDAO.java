@@ -54,6 +54,7 @@ public class WorkRequestDAO extends GenericDAO<WorkRequest> {
         }
     }
 
+
     // Specifik metode for WorkRequest
     public WorkRequest updateStatus(Long id, RequestStatus nyStatus) {
 
@@ -63,7 +64,16 @@ public class WorkRequestDAO extends GenericDAO<WorkRequest> {
             em.getTransaction().begin();
 
             WorkRequest workRequest =
-                    em.find(WorkRequest.class, id);
+                    em.createQuery(
+                                    "SELECT DISTINCT w FROM WorkRequest w " +
+                                            "LEFT JOIN FETCH w.workRequestDetails " +
+                                            "WHERE w.id = :id",
+                                    WorkRequest.class
+                            )
+                            .setParameter("id", id)
+                            .getResultStream()
+                            .findFirst()
+                            .orElse(null);
 
             if (workRequest != null) {
                 workRequest.setStatus(nyStatus);

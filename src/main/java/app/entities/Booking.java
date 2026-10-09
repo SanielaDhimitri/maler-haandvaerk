@@ -52,7 +52,16 @@ public class Booking {
             String kundenavn,
             String email,
             String telefon,
-            Bruger bruger) {
+            Bruger bruger
+    ) {
+
+        // BUSINESS RULE
+        // En booking må ikke oprettes med en dato i fortiden
+        if (dato != null && dato.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException(
+                    "Bookingdato må ikke være i fortiden"
+            );
+        }
 
         this.dato = dato;
         this.tid = tid;
@@ -61,6 +70,8 @@ public class Booking {
         this.email = email;
         this.telefon = telefon;
         this.bruger = bruger;
+
+        // Nye bookinger starter altid med status AFVENTER
         this.status = BookingStatus.AFVENTER;
     }
 
@@ -70,6 +81,15 @@ public class Booking {
     }
 
     public void setDato(LocalDate dato) {
+
+        // BUSINESS RULE
+        // Bookingdato må ikke være i fortiden
+        if (dato != null && dato.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException(
+                    "Bookingdato må ikke være i fortiden"
+            );
+        }
+
         this.dato = dato;
     }
 

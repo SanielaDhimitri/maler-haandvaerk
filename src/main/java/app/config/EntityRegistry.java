@@ -19,5 +19,6 @@ final class EntityRegistry {
         configuration.addAnnotatedClass(WorkRequestDetail.class);
         configuration.addAnnotatedClass(Offer.class);
         configuration.addAnnotatedClass(Project.class);
+        configuration.addAnnotatedClass(Role.class);
     }
 }

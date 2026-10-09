@@ -10,23 +10,25 @@ public class BookingService {
     public BookingService(BookingDAO bookingDAO) {
         this.bookingDAO = bookingDAO;
     }
+
     public void bekraeftBooking(Long bookingId) {
         bookingDAO.updateStatus(
                 bookingId,
                 BookingStatus.GODKENDT
         );
     }
+
     public void afvisBooking(Long bookingId) {
         bookingDAO.updateStatus(
                 bookingId,
                 BookingStatus.AFVIST
         );
     }
+
     public void afslutBooking(Long bookingId) {
         bookingDAO.updateStatus(
                 bookingId,
                 BookingStatus.AFSLUTTET
         );
     }
-
 }

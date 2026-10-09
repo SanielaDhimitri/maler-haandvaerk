@@ -1,14 +1,15 @@
 package app.entities;
 
-import app.enums.Rolle;
+
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bruger extends Person {
 
     // En bruger kan have mange bookinger
@@ -35,6 +36,6 @@ public class Bruger extends Person {
             String password,
             String telefon
     ) {
-        super(navn, email, password, telefon, Rolle.BRUGER);
+        super(navn, email, password, telefon);
     }
 }

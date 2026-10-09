@@ -1,7 +1,8 @@
 package app.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "projects")
 public class Project {
@@ -70,6 +70,10 @@ public class Project {
     private List<Medarbejder> medarbejdere = new ArrayList<>();
 
 
+    // =========================
+    // CONSTRUCTOR
+    // =========================
+
     public Project(
             String navn,
             LocalDate startDato,
@@ -78,12 +82,162 @@ public class Project {
             Bruger bruger,
             Service service
     ) {
+
+        // BUSINESS RULE
+        // Slutdato må ikke være før startdato
+        if (startDato != null
+                && slutDato != null
+                && slutDato.isBefore(startDato)) {
+
+            throw new IllegalArgumentException(
+                    "Slutdato må ikke være før startdato"
+            );
+        }
+
+        // BUSINESS RULE
+        // Prisen skal være større end 0
+        if (pris != null && pris.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException(
+                    "Pris skal være større end 0"
+            );
+        }
+
         this.navn = navn;
         this.startDato = startDato;
         this.slutDato = slutDato;
         this.pris = pris;
         this.bruger = bruger;
         this.service = service;
+
+        // Et nyt projekt starter med 0 % fremdrift
         this.fremdrift = 0;
+    }
+
+
+    // =========================
+    // SET NAVN
+    // =========================
+
+    public void setNavn(String navn) {
+        this.navn = navn;
+    }
+
+
+    // =========================
+    // SET START DATO
+    // =========================
+
+    public void setStartDato(LocalDate startDato) {
+
+        // BUSINESS RULE
+        // Slutdato må ikke være før startdato
+        if (startDato != null
+                && slutDato != null
+                && slutDato.isBefore(startDato)) {
+
+            throw new IllegalArgumentException(
+                    "Slutdato må ikke være før startdato"
+            );
+        }
+
+        this.startDato = startDato;
+    }
+
+
+    // =========================
+    // SET SLUT DATO
+    // =========================
+
+    public void setSlutDato(LocalDate slutDato) {
+
+        // BUSINESS RULE
+        // Slutdato må ikke være før startdato
+        if (startDato != null
+                && slutDato != null
+                && slutDato.isBefore(startDato)) {
+
+            throw new IllegalArgumentException(
+                    "Slutdato må ikke være før startdato"
+            );
+        }
+
+        this.slutDato = slutDato;
+    }
+
+
+    // =========================
+    // SET PRIS
+    // =========================
+
+    public void setPris(BigDecimal pris) {
+
+        // BUSINESS RULE
+        // Prisen skal være større end 0
+        if (pris != null && pris.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException(
+                    "Pris skal være større end 0"
+            );
+        }
+
+        this.pris = pris;
+    }
+
+
+    // =========================
+    // SET FREMDRIFT
+    // =========================
+
+    public void setFremdrift(int fremdrift) {
+
+        // BUSINESS RULE
+        // Fremdrift skal være mellem 0 og 100
+        if (fremdrift < 0 || fremdrift > 100) {
+            throw new IllegalArgumentException(
+                    "Fremdrift skal være mellem 0 og 100"
+            );
+        }
+
+        this.fremdrift = fremdrift;
+    }
+
+
+    // =========================
+    // SET BRUGER
+    // =========================
+
+    public void setBruger(Bruger bruger) {
+        this.bruger = bruger;
+    }
+
+
+    // =========================
+    // SET SERVICE
+    // =========================
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+
+    // =========================
+    // ADD MEDARBEJDER
+    // =========================
+
+    public void addMedarbejder(Medarbejder medarbejder) {
+
+        if (medarbejder != null
+                && !medarbejdere.contains(medarbejder)) {
+
+            medarbejdere.add(medarbejder);
+        }
+    }
+
+
+    // =========================
+    // REMOVE MEDARBEJDER
+    // =========================
+
+    public void removeMedarbejder(Medarbejder medarbejder) {
+        medarbejdere.remove(medarbejder);
     }
 }

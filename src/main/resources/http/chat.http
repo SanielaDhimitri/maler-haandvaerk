@@ -1,0 +1,60 @@
+### Chat - spørg Gemini
+POST http://localhost:7072/api/chat/
+Content-Type: application/json
+
+{
+  "question": "Hvad koster det cirka at få malet en stue?"
+}
+
+### 1. Pris
+POST http://localhost:7072/api/chat/
+Content-Type: application/json
+
+{
+  "question": "Hvad koster det at male min lejlighed?"
+}
+
+
+### 2. Malerarbejde
+POST http://localhost:7072/api/chat/
+Content-Type: application/json
+
+{
+  "question": "Kan I male både vægge og loft?"
+}
+
+
+### 3. VVS
+POST http://localhost:7072/api/chat/
+Content-Type: application/json
+
+{
+  "question": "Kan I hjælpe med VVS arbejde?"
+}
+
+
+### 4. Booking
+POST http://localhost:7072/api/chat/
+Content-Type: application/json
+
+{
+  "question": "Hvordan booker jeg en tid?"
+}
+
+
+### 5. Urelateret spørgsmål
+POST http://localhost:7072/api/chat/
+Content-Type: application/json
+
+{
+  "question": "Hvem vandt VM i fodbold?"
+}
+
+
+### 6. Tomt spørgsmål - skal give 400
+POST http://localhost:7072/api/chat/
+Content-Type: application/json
+
+{
+  "question": ""
+}

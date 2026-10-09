@@ -16,8 +16,8 @@ GET {{baseUrl}}/7
 Accept: application/json
 
 
-### 3. Hent tilbud med ID 8
-GET {{baseUrl}}/8
+### 3. Hent tilbud med ID 33
+GET {{baseUrl}}/33
 Accept: application/json
 
 
@@ -35,8 +35,8 @@ Content-Type: application/json
 }
 
 
-### 5. Opdater tilbud med ID 7
-PUT {{baseUrl}}/7
+### 5. Opdater tilbud med ID 33
+PUT {{baseUrl}}/33
 Content-Type: application/json
 
 {
@@ -44,7 +44,7 @@ Content-Type: application/json
   "beskrivelse": "Opdateret tilbud på maling af bolig",
   "oprettetDato": "2026-10-02",
   "gyldigTil": "2026-10-25",
-  "workRequestId": 1
+  "workRequestId": 86
 }
 
 
@@ -63,8 +63,11 @@ Content-Type: application/json
 
 ### 7. Slet tilbud
 # Skift ID'et til det tilbud, du ønsker at slette
-DELETE {{baseUrl}}/8
+DELETE {{baseUrl}}/33
 
+### Kontroller at Offer 33 er slettet
+GET http://localhost:7072/api/offers/33
+Accept: application/json
 
 ### 8. Kontroller alle tilbud efter DELETE
 GET {{baseUrl}}
@@ -76,3 +79,41 @@ GET {{baseUrl}}/8
 Accept: application/json
 //HTTP-filen tester CRUD-operationerne i vores REST
 //endpoint: POST /api/offers funger.
+
+### 4. Opret et nyt tilbud + send tilbudsmail
+# OBS: WorkRequest må ikke allerede have et tilbud
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "pris": 15000.0,
+  "beskrivelse": "Tilbud på maling af bolig",
+  "oprettetDato": "2026-10-06",
+  "gyldigTil": "2026-10-25",
+  "workRequestId": 61
+}
+
+### Opret tilbud til WorkRequest 63
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "pris": 15000.0,
+  "beskrivelse": "Tilbud på maling af lejlighed",
+  "oprettetDato": "2026-10-06",
+  "gyldigTil": "2026-10-25",
+  "workRequestId": 86
+}
+
+###
+
+POST http://localhost:7072/api/offers
+Content-Type: application/json
+
+{
+  "pris": 12500.00,
+  "beskrivelse": "Maling af lejlighed",
+  "oprettetDato": "2026-10-06",
+  "gyldigTil": "2026-10-20",
+  "workRequestId": 66
+}

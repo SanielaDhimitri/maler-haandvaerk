@@ -1,0 +1,39 @@
+### Login - korrekt
+POST http://localhost:7072/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "ela@test.dk",
+  "password": "1234"
+}
+
+### Login - forkert password
+POST http://localhost:7072/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "ela@test.dk",
+  "password": "9999"
+}
+
+###
+
+### Login - email findes ikke
+POST http://localhost:7072/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "findesikke@test.dk",
+  "password": "1234"
+}
+
+### Register
+POST http://localhost:7072/api/auth/register
+Content-Type: application/json
+
+{
+  "navn": "Peter Jensen",
+  "email": "peter@test.dk",
+  "password": "1234",
+  "telefon": "11223344"
+}

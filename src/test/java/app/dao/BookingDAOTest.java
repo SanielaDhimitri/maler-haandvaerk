@@ -38,6 +38,10 @@ class BookingDAOTest {
         }
     }
 
+    // =========================
+    // CREATE BOOKING
+    // =========================
+
     @Test
     void createBooking() {
 
@@ -49,7 +53,7 @@ class BookingDAOTest {
         serviceDAO.create(maling);
 
         Booking booking = new Booking(
-                LocalDate.of(2026, 9, 20),
+                LocalDate.now().plusDays(1),
                 LocalTime.of(10, 30),
                 "Maling af stue",
                 "Anna",
@@ -64,6 +68,11 @@ class BookingDAOTest {
 
         assertNotNull(created.getId());
     }
+
+
+    // =========================
+    // FIND BOOKING BY ID
+    // =========================
 
     @Test
     void findBookingById() {
@@ -82,7 +91,7 @@ class BookingDAOTest {
         serviceDAO.create(elektriker);
 
         Booking booking = new Booking(
-                LocalDate.of(2026, 9, 21),
+                LocalDate.now().plusDays(2),
                 LocalTime.of(12, 0),
                 "Tømrer og elektrikerarbejde",
                 "Lars",
@@ -104,6 +113,11 @@ class BookingDAOTest {
         assertEquals(2, found.getServices().size());
     }
 
+
+    // =========================
+    // FIND ALL
+    // =========================
+
     @Test
     void findAll() {
 
@@ -115,7 +129,7 @@ class BookingDAOTest {
         serviceDAO.create(vvs);
 
         Booking booking = new Booking(
-                LocalDate.of(2026, 9, 22),
+                LocalDate.now().plusDays(3),
                 LocalTime.of(14, 0),
                 "VVS arbejde",
                 "Peter",
@@ -134,6 +148,11 @@ class BookingDAOTest {
         assertFalse(bookings.isEmpty());
     }
 
+
+    // =========================
+    // UPDATE STATUS
+    // =========================
+
     @Test
     void updateStatus() {
 
@@ -145,7 +164,7 @@ class BookingDAOTest {
         serviceDAO.create(murer);
 
         Booking booking = new Booking(
-                LocalDate.of(2026, 9, 23),
+                LocalDate.now().plusDays(4),
                 LocalTime.of(15, 0),
                 "Murerarbejde",
                 "Maria",
@@ -167,14 +186,22 @@ class BookingDAOTest {
                 booking.getId(),
                 BookingStatus.GODKENDT
         );
+
         Booking updated =
                 bookingDAO.findById(booking.getId());
+
+        assertNotNull(updated);
 
         assertEquals(
                 BookingStatus.GODKENDT,
                 updated.getStatus()
         );
     }
+
+
+    // =========================
+    // DELETE BOOKING
+    // =========================
 
     @Test
     void deleteBooking() {
@@ -187,7 +214,7 @@ class BookingDAOTest {
         serviceDAO.create(reparationer);
 
         Booking booking = new Booking(
-                LocalDate.of(2026, 9, 24),
+                LocalDate.now().plusDays(5),
                 LocalTime.of(16, 0),
                 "Reparation i bolig",
                 "Sofie",
@@ -204,16 +231,22 @@ class BookingDAOTest {
 
         bookingDAO.delete(id);
 
-        Booking deleted = bookingDAO.findById(id);
+        Booking deleted =
+                bookingDAO.findById(id);
 
         assertNull(deleted);
     }
+
+
+    // =========================
+    // UPDATE BOOKING
+    // =========================
 
     @Test
     void updateBooking() {
 
         Booking booking = new Booking(
-                LocalDate.of(2026, 9, 25),
+                LocalDate.now().plusDays(6),
                 LocalTime.of(10, 0),
                 "Gammel beskrivelse",
                 "Anna",
@@ -224,7 +257,11 @@ class BookingDAOTest {
 
         bookingDAO.create(booking);
 
-        booking.setDato(LocalDate.of(2026, 9, 30));
+        // Ny dato skal også være i fremtiden
+        LocalDate nyDato =
+                LocalDate.now().plusDays(10);
+
+        booking.setDato(nyDato);
         booking.setTid(LocalTime.of(14, 30));
         booking.setBeskrivelse("Ny beskrivelse");
 
@@ -233,8 +270,10 @@ class BookingDAOTest {
         Booking updated =
                 bookingDAO.findById(booking.getId());
 
+        assertNotNull(updated);
+
         assertEquals(
-                LocalDate.of(2026, 9, 30),
+                nyDato,
                 updated.getDato()
         );
 

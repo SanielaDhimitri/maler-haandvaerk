@@ -1,14 +1,15 @@
 package app.entities;
 
-import app.enums.Rolle;
+
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Medarbejder extends Person {
 
     @ManyToMany(mappedBy = "medarbejdere")
@@ -20,6 +21,6 @@ public class Medarbejder extends Person {
             String password,
             String telefon
     ) {
-        super(navn, email, password, telefon, Rolle.MEDARBEJDER);
+        super(navn, email, password, telefon);
     }
 }

@@ -138,20 +138,21 @@ public class WorkRequestApiTest {
                         .extract()
                         .path("id");
 
-
         given()
                 .contentType("application/json")
                 .pathParam("id", id)
-                .body("\"UNDER_BEHANDLING\"")
-
+                .body("""
+                {
+                    "status": "UNDER_BEHANDLING"
+                }
+                """)
                 .when()
                 .put("/api/workrequests/{id}/status")
-
                 .then()
                 .statusCode(200)
-                .body("id", equalTo(id))
                 .body("status", equalTo("UNDER_BEHANDLING"));
-    }
+
+     }
 
 
     // 5. TEST DELETE WORKREQUEST

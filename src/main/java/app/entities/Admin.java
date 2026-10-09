@@ -1,27 +1,24 @@
 package app.entities;
 
-import app.enums.Rolle;
+
 import jakarta.persistence.Entity;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@Entity
-@NoArgsConstructor
+@Entity//JPA entities
+@NoArgsConstructor(access = AccessLevel.PROTECTED)//Protect JPA entities+costruct uden parametres for jpa
 public class Admin extends Person {
 
     public Admin(
             String navn,
             String email,
             String password,
-            String telefon,
-            Rolle rolle
-    ) {
-        super(navn, email, password, telefon, rolle);
+            String telefon
 
-        if (rolle != Rolle.ADMIN && rolle != Rolle.OWNER) {
-            throw new IllegalArgumentException(
-                    "Admin kan kun have rollen ADMIN eller OWNER"
-            );
-        }
+    ) {
+        super(navn, email, password, telefon);
+
+
     }
 }
 

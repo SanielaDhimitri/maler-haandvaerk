@@ -56,6 +56,7 @@ public class BookingMapper {
 
     // List<Entity> -> List<DTO>
     public static List<BookingDTO> toDTOList(List<Booking> bookings) {
+
         return bookings.stream()
                 .map(BookingMapper::toDTO)
                 .toList();

@@ -53,7 +53,43 @@ public class BookingController {
     public void create(Context ctx) {
 
         BookingRequestDTO request =
-                ctx.bodyAsClass(BookingRequestDTO.class);
+                ctx.bodyValidator(BookingRequestDTO.class)
+
+                        .check(
+                                b -> b.dato() != null,
+                                "Dato skal angives"
+                        )
+
+                        .check(
+                                b -> b.tid() != null,
+                                "Tid skal angives"
+                        )
+
+                        .check(
+                                b -> b.kundenavn() != null
+                                        && !b.kundenavn().isBlank(),
+                                "Kundenavn må ikke være tomt"
+                        )
+
+                        .check(
+                                b -> b.email() != null
+                                        && b.email().contains("@"),
+                                "Email skal være gyldig"
+                        )
+
+                        .check(
+                                b -> b.telefon() != null
+                                        && b.telefon().matches("\\d{8}"),
+                                "Telefonnummer skal bestå af 8 cifre"
+                        )
+
+                        .check(
+                                b -> b.beskrivelse() != null
+                                        && !b.beskrivelse().isBlank(),
+                                "Beskrivelse må ikke være tom"
+                        )
+
+                        .get();
 
         Set<Service> services =
                 findServices(request.serviceIds());
@@ -100,7 +136,44 @@ public class BookingController {
         }
 
         BookingRequestDTO request =
-                ctx.bodyAsClass(BookingRequestDTO.class);
+                ctx.bodyValidator(BookingRequestDTO.class)
+
+                        .check(
+                                b -> b.dato() != null,
+                                "Dato skal angives"
+                        )
+
+                        .check(
+                                b -> b.tid() != null,
+                                "Tid skal angives"
+                        )
+
+                        .check(
+                                b -> b.kundenavn() != null
+                                        && !b.kundenavn().isBlank(),
+                                "Kundenavn må ikke være tomt"
+                        )
+
+                        .check(
+                                b -> b.email() != null
+                                        && b.email().contains("@"),
+                                "Email skal være gyldig"
+                        )
+
+                        .check(
+                                b -> b.telefon() != null
+                                        && b.telefon().matches("\\d{8}"),
+                                "Telefonnummer skal bestå af 8 cifre"
+                        )
+
+                        .check(
+                                b -> b.beskrivelse() != null
+                                        && !b.beskrivelse().isBlank(),
+                                "Beskrivelse må ikke være tom"
+                        )
+
+                        .get();
+
 
         Set<Service> services =
                 findServices(request.serviceIds());
@@ -144,8 +217,7 @@ public class BookingController {
 
         bookingDAO.delete(id);
 
-        ctx.status(HttpStatus.NO_CONTENT)
-                .json(Map.of("message", "Booking deleted successfully"));
+        ctx.status(HttpStatus.NO_CONTENT);
     }
 
     // Læser ID fra URL
