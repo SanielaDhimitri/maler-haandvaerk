@@ -964,73 +964,37 @@ Interfacet indeholder:
 
 ---
 
-## JWT Security
+## GitHub Actions – Continuous Integration (CI)
 
-Projektet er klargjort til JWT authentication og authorization.
+Jeg har opsat GitHub Actions til automatisk at bygge og teste mit Java-backendprojekt.
 
-Dependency til `TokenSecurity` er tilføjet til Maven.
+Workflow-filen ligger i:
 
-JWT-delen skal bruges til:
+`.github/workflows/maven.yml`
 
-- at generere token ved login/register
-- at kontrollere token på beskyttede endpoints
-- at identificere den aktuelle bruger
-- at kontrollere brugerens roller
+Når jeg pusher kode til `main`, starter GitHub Actions automatisk.
 
-De næste dele, der skal implementeres, er:
+Workflowet udfører følgende:
 
-`createToken → authenticate → authorize → protected endpoints`
+1. Henter projektets kode fra GitHub.
+2. Installerer Java 25.
+3. Starter en PostgreSQL 16-database.
+4. Kompilerer Maven-projektet.
+5. Starter Javalin-serveren på port 7072.
+6. Kører automatiserede tests med `mvn verify`.
 
-JWT-implementeringen færdiggøres senere.
+### E-mail under tests
+
+Jeg bruger environment variablen `EMAIL_TEST_MODE=true` i GitHub Actions.
+
+Det betyder, at e-mails simuleres under CI, så testene ikke sender rigtige e-mails gennem Resend API.
+
+### Resultat
+
+GitHub Actions workflowet er gennemført med succes.
+
+CI hjælper mig med automatisk at opdage fejl, når jeg ændrer eller tilføjer kode.
+
+Deployment er endnu ikke implementeret og bliver arbejdet med senere.
 
 
-## Næste skridt
-
-Security er påbegyndt.
-
-Jeg har implementeret BCrypt password hashing, `ISecurityUser`, `ISecurityDAO`, `SecurityDAO`, `ISecurityController`, roller samt fungerende `/api/auth/register` og `/api/auth/login`.
-
-Register og login er testet og virker.
-
-`TokenSecurity 1.0.4` er tilføjet til Maven, men JWT-delen er endnu ikke færdig.
-
-Næste gang fortsætter jeg med lærerens JWT-løsning:
-
-`createToken → authenticate → authorize → protected endpoints`
-
-Jeg venter med JWT-implemente
-
-##
-
-## LOGIN =jwt
-Ela
-│
-│ email + password
-▼
-POST /api/auth/login
-│
-▼
-AuthController
-│
-▼
-SecurityDAO + BCrypt
-│
-│ password OK ✅
-▼
-Krijo JWT
-│
-▼
-JWT → Ela
-│
-│ Authorization: Bearer JWT
-▼
-Protected endpoint
-│
-▼
-authenticate()
-│
-▼
-authorize()
-│
-├── USER lejohet?  → ✅
-└── Nuk lejohet?   → ❌
